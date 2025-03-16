@@ -1,19 +1,17 @@
 package dev.franke.felipe.webhook_cielo_api.api.model;
 
+import dev.franke.felipe.webhook_cielo_api.api.dto.request.NotificationRequestDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
-/**
-* Main class for the Notification model.
-* Using JPA annotations to map the class to the db table.
-* @author Felipe
-* @version 1.0
-* @since 2025-03-15
-*/
 @Entity
 @Table(name = "notification")
 public class Notification {
+
+    public static Notification fromRequest(NotificationRequestDTO request) {
+        return new Notification(request.paymentId(), request.recurrentPaymentId(), request.changeType());
+    }
 
     @Id
     private String paymentId;
