@@ -1,5 +1,6 @@
 package dev.franke.felipe.webhook_cielo_api.api.service;
 
+import dev.franke.felipe.webhook_cielo_api.api.dto.request.NotificationRequestDTO;
 import dev.franke.felipe.webhook_cielo_api.api.exception.InvalidNotificationIdException;
 import dev.franke.felipe.webhook_cielo_api.api.exception.NotificationNotFoundException;
 import dev.franke.felipe.webhook_cielo_api.api.model.Notification;
@@ -27,6 +28,11 @@ public class NotificationService {
         }
         Optional<Notification> notification = notificationRepository.findByPaymentId(paymentId);
         return notification.orElseThrow(() -> new NotificationNotFoundException(notFoundMessage));
+    }
+
+    public boolean isNotificationSaved(NotificationRequestDTO notificationRequestDTO) {
+        notificationRepository.save(Notification.fromRequest(notificationRequestDTO));
+        return true;
     }
 
 }
