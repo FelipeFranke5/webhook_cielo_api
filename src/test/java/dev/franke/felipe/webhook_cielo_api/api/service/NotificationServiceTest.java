@@ -32,9 +32,7 @@ public class NotificationServiceTest {
         String paymentIdUserEntered = id.toString();
         Notification notification = new Notification(paymentIdUserEntered, null, 1);
         Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenReturn(notification);
-
         Notification result = notificationService.getNotificationByPaymentId(paymentIdUserEntered);
-        // Assert
         Assertions.assertNotNull(result, () -> "The notification should not be null");
         Assertions.assertEquals(result, notification, () -> "The notification should be the same as the mock");
     }
