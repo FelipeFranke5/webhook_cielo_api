@@ -1,5 +1,6 @@
 package dev.franke.felipe.webhook_cielo_api.api.service;
 
+import dev.franke.felipe.webhook_cielo_api.api.dto.request.NotificationRequestDTO;
 import dev.franke.felipe.webhook_cielo_api.api.exception.InvalidNotificationIdException;
 import dev.franke.felipe.webhook_cielo_api.api.exception.NotificationNotFoundException;
 import dev.franke.felipe.webhook_cielo_api.api.model.Notification;
@@ -72,6 +73,16 @@ public class NotificationServiceTest {
             "Invalid Payment ID " + paymentIdUserEntered, invalidIdException.getMessage(),
             () -> "Expected " + expectedMessage + " but got " + invalidIdException.getMessage()
         );
+    }
+
+    @Test
+    @DisplayName("Method 'isNotificationSaved' - Notification Saved - Should return true")
+    public void isNotificationSaved_NotificationSaved_ShouldReturnTrue() {
+        NotificationRequestDTO notificationRequest = new NotificationRequestDTO(UUID.randomUUID().toString(), null, 1);
+        Notification notification = Notification.fromRequest(notificationRequest);
+        Mockito.when(notificationRepository.save(notification)).thenReturn(notification);
+        boolean result = notificationService.isNotificationSaved(notificationRequest);
+        Assertions.assertTrue(result, () -> "The notification should be saved");
     }
 
 }
