@@ -4,6 +4,7 @@ import dev.franke.felipe.webhook_cielo_api.api.exception.InvalidNotificationIdEx
 import dev.franke.felipe.webhook_cielo_api.api.exception.NotificationNotFoundException;
 import dev.franke.felipe.webhook_cielo_api.api.model.Notification;
 import dev.franke.felipe.webhook_cielo_api.api.repository.NotificationRepository;
+import java.util.Optional;
 import java.util.UUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +32,8 @@ public class NotificationServiceTest {
         UUID id = UUID.randomUUID();
         String paymentIdUserEntered = id.toString();
         Notification notification = new Notification(paymentIdUserEntered, null, 1);
-        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenReturn(notification);
+        Optional<Notification> optionalNotification = Optional.of(notification);
+        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenReturn(optionalNotification);
         Notification result = notificationService.getNotificationByPaymentId(paymentIdUserEntered);
         Assertions.assertNotNull(result, () -> "The notification should not be null");
         Assertions.assertEquals(result, notification, () -> "The notification should be the same as the mock");
@@ -42,11 +44,17 @@ public class NotificationServiceTest {
     public void getNotificationByPaymentId_ValidPaymentIdNotFound_ShouldThrowNotificationNotFoundException() {
         UUID id = UUID.randomUUID();
         String paymentIdUserEntered = id.toString();
-        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenReturn(null);
-        Assertions.assertThrows(
+        String expectedMessage = "Notification with payment ID " + paymentIdUserEntered + " not found";
+        String actualMessage = expectedMessage;
+        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenThrow(new NotificationNotFoundException(actualMessage));
+        NotificationNotFoundException notFoundException = Assertions.assertThrows(
             NotificationNotFoundException.class,
             () -> notificationService.getNotificationByPaymentId(paymentIdUserEntered),
             () -> "The method should throw NotificationNotFoundException when the notification is not found"
+        );
+        Assertions.assertEquals(
+            "Notification with payment ID " + paymentIdUserEntered + " not found", notFoundException.getMessage(),
+            () -> "Expected " + expectedMessage + " but got " + notFoundException.getMessage()
         );
     }
 
@@ -54,10 +62,15 @@ public class NotificationServiceTest {
     @DisplayName("Method 'getNotificationByPaymentId' - Invalid PaymentId - Should throw InvalidNotificationIdException")
     public void getNotificationByPaymentId_InvalidPaymentId_ShouldThrowInvalidNotificationIdException() {
         String paymentIdUserEntered = "invalid-id";
-        Assertions.assertThrows(
+        String expectedMessage = "Invalid Payment ID " + paymentIdUserEntered;
+        InvalidNotificationIdException invalidIdException = Assertions.assertThrows(
             InvalidNotificationIdException.class,
             () -> notificationService.getNotificationByPaymentId(paymentIdUserEntered),
             () -> "The method should throw InvalidNotificationIdException when the paymentId is invalid"
+        );
+        Assertions.assertEquals(
+            "Invalid Payment ID " + paymentIdUserEntered, invalidIdException.getMessage(),
+            () -> "Expected " + expectedMessage + " but got " + invalidIdException.getMessage()
         );
     }
 
