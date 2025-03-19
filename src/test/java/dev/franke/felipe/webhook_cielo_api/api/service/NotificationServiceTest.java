@@ -13,18 +13,24 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.springframework.kafka.core.KafkaTemplate;
 
 public class NotificationServiceTest {
 
     @Mock
     private NotificationRepository notificationRepository;
 
+    @Mock
+    private KafkaTemplate<String, String> kafkaTemplate;
+
     private NotificationService notificationService;
 
     @BeforeEach
+    @SuppressWarnings("unchecked")
     public void setUp() {
         notificationRepository = Mockito.mock(NotificationRepository.class);
-        notificationService = new NotificationService(notificationRepository);
+        kafkaTemplate = Mockito.mock(KafkaTemplate.class);
+        notificationService = new NotificationService(notificationRepository, kafkaTemplate);
     }
 
     @Test
