@@ -46,8 +46,8 @@ public class NotificationServiceTest {
         UUID id = UUID.randomUUID();
         String paymentIdUserEntered = id.toString();
         String expectedMessage = "Notification with payment ID " + paymentIdUserEntered + " not found";
-        String actualMessage = expectedMessage;
-        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered)).thenThrow(new NotificationNotFoundException(actualMessage));
+        Mockito.when(notificationRepository.findByPaymentId(paymentIdUserEntered))
+                .thenThrow(new NotificationNotFoundException(expectedMessage));
         NotificationNotFoundException notFoundException = Assertions.assertThrows(
             NotificationNotFoundException.class,
             () -> notificationService.getNotificationByPaymentId(paymentIdUserEntered),
