@@ -39,7 +39,7 @@ public class NotificationService {
 
     public boolean isNotificationSaved(NotificationRequestDTO notificationRequestDTO) {
         notificationRepository.save(Notification.fromRequest(notificationRequestDTO));
-        kafkaTemplate.send("webhook-cielo", notificationRequestDTO.paymentId());
+        kafkaTemplate.send("webhook-cielo", "paymentId", notificationRequestDTO.paymentId());
         return true;
     }
 
