@@ -7,6 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import java.util.UUID;
+
 
 @SpringBootApplication
 public class WebhookCieloApiApplication {
@@ -22,8 +24,8 @@ public class WebhookCieloApiApplication {
 	public CommandLineRunner initial() {
 		return args -> {
 			System.out.println("Testing KAKFA ..");
-			kafkaTemplate.send("webhook-cielo", "testing..");
-			kafkaTemplate.send("webhook-cielo", "testing again..");
+			kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
+			kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
 		};
 	}
 
