@@ -34,3 +34,6 @@ build/
 
 ### dev container ###
 .devcontainer/
+
+### Do not include Dockerfile
+Dockerfile
