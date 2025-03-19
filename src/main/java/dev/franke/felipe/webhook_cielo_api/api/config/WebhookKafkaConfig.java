@@ -1,10 +1,14 @@
 package dev.franke.felipe.webhook_cielo_api.api.config;
 
+import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.kafka.config.TopicBuilder;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
+import org.springframework.kafka.core.KafkaAdmin;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 
@@ -31,6 +35,22 @@ public class WebhookKafkaConfig {
     @Bean
     public KafkaTemplate<String, String> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
+    }
+
+    @Bean
+    public KafkaAdmin admin() {
+        Map<String, Object> configurations = new HashMap<>();
+        configurations.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
+        return new KafkaAdmin(configurations);
+    }
+
+    @Bean
+    public NewTopic cieloTopic() {
+        return TopicBuilder.name("webhook-cielo")
+                .partitions(1)
+                .replicas(3)
+                .compact()
+                .build();
     }
 
 }
