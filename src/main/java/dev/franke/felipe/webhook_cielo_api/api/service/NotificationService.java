@@ -7,15 +7,22 @@ import dev.franke.felipe.webhook_cielo_api.api.model.Notification;
 import dev.franke.felipe.webhook_cielo_api.api.repository.NotificationRepository;
 import java.util.Optional;
 import java.util.UUID;
+
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service
 public class NotificationService {
 
     private final NotificationRepository notificationRepository;
+    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    public NotificationService(NotificationRepository notificationRepository) {
+    public NotificationService(
+            NotificationRepository notificationRepository,
+            KafkaTemplate<String, String> kafkaTemplate
+    ) {
         this.notificationRepository = notificationRepository;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public Notification getNotificationByPaymentId(String paymentId) {
@@ -32,6 +39,7 @@ public class NotificationService {
 
     public boolean isNotificationSaved(NotificationRequestDTO notificationRequestDTO) {
         notificationRepository.save(Notification.fromRequest(notificationRequestDTO));
+        kafkaTemplate.send("webhook-cielo", notificationRequestDTO.paymentId());
         return true;
     }
 
