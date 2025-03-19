@@ -5,7 +5,4 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public record NotificationRequestDTO(
     @JsonProperty("PaymentId") String paymentId,
     @JsonProperty("RecurrentPaymentId") String recurrentPaymentId,
-    @JsonProperty("ChangeType") int changeType
-) {
-
-}
+    @JsonProperty("ChangeType") Integer changeType) {}

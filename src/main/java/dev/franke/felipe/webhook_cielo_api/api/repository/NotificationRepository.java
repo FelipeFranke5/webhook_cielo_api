@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, String> {
-    Optional<Notification> findByPaymentId(String paymentId);
+  Optional<Notification> findByPaymentId(String paymentId);
 }
