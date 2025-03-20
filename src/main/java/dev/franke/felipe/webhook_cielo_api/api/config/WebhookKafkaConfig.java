@@ -47,7 +47,7 @@ public class WebhookKafkaConfig {
     public NewTopic cieloTopic() {
         return TopicBuilder.name("webhook-cielo")
                 .partitions(1)
-                .replicas(3)
+                .replicas(1)
                 .compact()
                 .build();
     }
