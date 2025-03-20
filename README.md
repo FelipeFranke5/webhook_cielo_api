@@ -40,7 +40,7 @@ Aprofundar conhecimentos no funcionamento de microserviços, especificamente na 
 
 3. Compile e execute a aplicação:
     ```bash
-    ./mvnw spring-boot:run
+    mvn spring-boot:run
     ```
 
 ## Rotas Disponíveis
