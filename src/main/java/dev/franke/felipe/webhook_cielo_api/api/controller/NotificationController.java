@@ -20,10 +20,6 @@ public class NotificationController {
 
   @PostMapping
   public ResponseEntity<Void> processData(@RequestBody NotificationRequestDTO payload) {
-    boolean saved = notificationService.isNotificationSaved(payload);
-    if (saved) {
-      return ResponseEntity.ok().build();
-    }
-    return ResponseEntity.internalServerError().build();
+    return notificationService.isNotificationSaved(payload) ? ResponseEntity.ok().build() : ResponseEntity.internalServerError().build();
   }
 }
