@@ -11,18 +11,19 @@ import org.springframework.kafka.core.KafkaTemplate;
 @SpringBootApplication
 public class WebhookCieloApiApplication {
 
-  @Autowired private KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-  public static void main(String[] args) {
-    SpringApplication.run(WebhookCieloApiApplication.class, args);
-  }
+    public static void main(String[] args) {
+        SpringApplication.run(WebhookCieloApiApplication.class, args);
+    }
 
-  @Bean
-  public CommandLineRunner initial() {
-    return args -> {
-      System.out.println("Testing KAKFA ..");
-      kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
-      kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
-    };
-  }
+    @Bean
+    public CommandLineRunner initial() {
+        return args -> {
+            System.out.println("Testing KAKFA ..");
+            kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
+            kafkaTemplate.send("webhook-cielo", "paymentId", UUID.randomUUID().toString());
+        };
+    }
 }
