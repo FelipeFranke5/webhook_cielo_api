@@ -102,7 +102,7 @@
 				<artifactId>spotless-maven-plugin</artifactId>
 				<configuration>
 					<java>
-						<googleJavaFormat/>
+						<palantirJavaFormat />
 						<importOrder/>
 						<removeUnusedImports />
 					</java>
